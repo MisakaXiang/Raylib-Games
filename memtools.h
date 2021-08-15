@@ -1,4 +1,4 @@
-// tools.h 用于内存处理的头文件
+// memtools.h 用于内存处理的头文件
 #pragma once
 
 #include <stdio.h>
