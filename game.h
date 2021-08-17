@@ -17,14 +17,14 @@ const float PLAYER_HOR_SPD = 200.0f;
 // MAX_NOTE_NUM 一场游戏中最多的音符数
 const int MAX_NOTE_NUM = 999;
 
-// build_size ???
+// build_size EnvBlocks的大小
 Vector2 build_size[5];
+// EnvBlock的数量
+const int envItemsLength = 1000;
 // screenWidth 游戏的显示宽度
 const int screenWidth = 1000;
 // screenHeight 游戏的显示高度
 const int screenHeight = 600;
-// on_build ???
-int on_build = 0;
 // total_score 玩家的总分数
 float total_score = 0.0f;
 // total_perfect 玩家总perfect数

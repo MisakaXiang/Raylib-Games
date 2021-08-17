@@ -11,7 +11,7 @@ typedef struct Player
     Rectangle rect;
     Vector2 position;
     Vector2 speed;
-    bool canJump;
+    // bool canJump;
 } Player;
 
 // Soul 音符结构体
@@ -29,13 +29,13 @@ typedef struct Soul
 typedef struct EnvItem
 {
     Rectangle rect;
-    int blocking;
+    // int blocking;
     Color color;
     int tex_type;
 } EnvItem;
 
 // GameAttrInit 对游戏初始贴图场景进行初始化
-int GameAttrInit(EnvItem *pDFloor, Vector2 *pVector2[5], EnvItem *pEnvBlocks);
+int GameAttrInit(EnvItem *pDFloor, Vector2 *pVector2[5], EnvItem **pEnvBlocks);
 
 // LoadGameResources 加载游戏资源
 int LoadGameResources(int song_id);

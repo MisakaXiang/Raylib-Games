@@ -33,3 +33,20 @@ int ReadSoulsFromFile(int song_id, Soul *souls,int *p_note_num)
     fclose(fpRead);
     return 0;
 }
+
+
+int WriteSoulsToFile(int song_id, int player_position_x) 
+{
+    char SaveSoulFileName[10];
+    if (song_id < 1 || song_id > 4)
+    {
+        fprintf(stderr, "song_id invaild.\n");
+        return -1;
+    }
+    sprintf(SaveSoulFileName, "save_song%d.txt", song_id);
+    FILE *fpWrite = fopen(SaveSoulFileName, "w");
+    CheckPointer(fpWrite);
+    fprintf(fpWrite, "%lf\n", player_position_x);
+    fclose(fpWrite);
+    return 0;
+}
