@@ -11,7 +11,6 @@ typedef struct Player
     Rectangle rect;
     Vector2 position;
     Vector2 speed;
-    // bool canJump;
 } Player;
 
 // Soul 音符结构体
@@ -29,7 +28,6 @@ typedef struct Soul
 typedef struct EnvItem
 {
     Rectangle rect;
-    // int blocking;
     Color color;
     int tex_type;
 } EnvItem;

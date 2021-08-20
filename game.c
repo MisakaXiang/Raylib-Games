@@ -76,7 +76,7 @@ void StartGame(void)
     total_perfect = 0;
     total_miss = 0;
     total_great = 0;
-    interface = 0;
+    INTERFACE = START;
     total_score = 0;
     GameOver = false;
     song_end = false;
@@ -120,68 +120,68 @@ void StartGame(void)
 // Update game (one frame)
 void UpdateGame(void)
 {
-    if (interface == 0)
+    if (INTERFACE == START)
     {
         if (IsKeyPressed(KEY_SPACE))
         {
-            interface = 1;
+            INTERFACE = THEME;
         }
     }
 
-    if (interface == 1)
+    if (INTERFACE == THEME)
     {
         if (IsKeyPressed(KEY_ENTER))
         {
-            interface = 2;
+            INTERFACE = RULE;
         }
     }
 
-    if (interface == 2)
+    if (INTERFACE == RULE)
     {
         if (IsKeyPressed(KEY_SPACE))
         {
-            interface = 3;
+            INTERFACE == SELECT_MUSIC;
         }
     }
 
-    if (interface == 3)
+    if (INTERFACE == SELECT_MUSIC)
     {
         // choose different song
         if (IsKeyPressed(KEY_Z))
         {
             song_id = 1;
             InitGame();
-            interface = 5;
+            INTERFACE == PLAY;
         }
         if (IsKeyPressed(KEY_X))
         {
             song_id = 2;
             InitGame();
-            interface = 5;
+            INTERFACE == PLAY;
         }
         if (IsKeyPressed(KEY_C))
         {
             song_id = 3;
             InitGame();
-            interface = 5;
+            INTERFACE == PLAY;
         }
         if (IsKeyPressed(KEY_V))
         {
             song_id = 4;
             InitGame();
-            interface = 5;
+            INTERFACE == PLAY;
         }
     }
 
-    if (interface == 4)
+    if (INTERFACE == GAME_OVER)
     {
         if (IsKeyPressed(KEY_ENTER))
         {
-            interface = 3;
+            INTERFACE = SELECT_MUSIC;
         }
     }
 
-    if (interface == 5)
+    if (INTERFACE == PLAY)
     {
         PlayMusicStream(back_sound);
         UpdateMusicStream(back_sound);
@@ -199,11 +199,11 @@ void UpdateGame(void)
         //----------------------------------------------------------------------------------
     }
 
-    if (interface == 6)
+    if (INTERFACE == SCORE)
     {
         if (IsKeyPressed(KEY_ENTER))
         {
-            interface = 3;
+            INTERFACE = SELECT_MUSIC;
         }
     }
 }
@@ -213,14 +213,14 @@ void DrawGame(void)
 {
     // Draw
     //----------------------------------------------------------------------------------
-    if (interface == 4)
+    if (INTERFACE == GAME_OVER)
     {
         BeginDrawing();
         DrawTexOnBackground(LIGHTGRAY, GameOver_tex);
         EndDrawing();
     }
     
-    if (interface == 5)
+    if (INTERFACE == PLAY)
     {
         BeginDrawing();
         DrawTexOnBackground(LIGHTGRAY, play_tex);
@@ -240,35 +240,35 @@ void DrawGame(void)
         EndDrawing();
     }
 
-    if (interface == 0)
+    if (INTERFACE == START)
     {
         BeginDrawing();
         DrawTexOnBackground(RAYWHITE, start_tex);
         EndDrawing();
     }
 
-    if (interface == 1)
+    if (INTERFACE == THEME)
     {
         BeginDrawing();
         DrawTexOnBackground(RAYWHITE, theme_tex);
         EndDrawing();
     }
 
-    if (interface == 2)
+    if (INTERFACE == RULE)
     {
         BeginDrawing();
         DrawTexOnBackground(RAYWHITE, rule_tex);
         EndDrawing();
     }
 
-    if (interface == 3)
+    if (INTERFACE == SELECT_MUSIC)
     {
         BeginDrawing();
         DrawTexOnBackground(RAYWHITE, journey_tex);
         EndDrawing();
     }
 
-    if (interface == 6)
+    if (INTERFACE == SCORE)
     {
         BeginDrawing();
         DrawTexOnBackground(LIGHTGRAY, score_tex);

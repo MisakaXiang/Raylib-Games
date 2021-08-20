@@ -23,5 +23,5 @@ void DrawEnvBlocksOnCanvas();
 // DrawPlayerOnCanvas 在画布上绘制Player
 void DrawPlayerOnCanvas();
 
-// DrawFlorrOnCanvas 在画布上绘制Floor
+// DrawFloorOnCanvas 在画布上绘制Floor
 void DrawFloorOnCanvas();

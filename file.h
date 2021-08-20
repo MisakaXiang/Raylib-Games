@@ -5,6 +5,7 @@
 #include <stdlib.h>
 
 #include "attr.h"
+#include "errcode.h"
 
 int ReadSoulsFromFile(int song_id, Soul *souls,int *p_note_num)
 {
@@ -13,14 +14,14 @@ int ReadSoulsFromFile(int song_id, Soul *souls,int *p_note_num)
     if (song_id < 1 || song_id > 4)
     {
         fprintf(stderr, "song_id invaild.\n");
-        return -1;
+        return SONG_ID_INVAILD;
     }
     sprintf(soulFileName, "song%d.txt", song_id);
     FILE *fpRead = fopen(soulFileName, "rb");
     if (!fpRead)
     {
         fprintf(stderr, "Song souls file read error.\n");
-        return -1;
+        return NULL_POINTER_ERROR;
     }
     double soul_temp;
     *p_note_num = 0; // 这首歌曲的音符数
@@ -31,7 +32,7 @@ int ReadSoulsFromFile(int song_id, Soul *souls,int *p_note_num)
         *p_note_num += 1;
     }
     fclose(fpRead);
-    return 0;
+    return SUCCESS;
 }
 
 
@@ -41,12 +42,16 @@ int WriteSoulsToFile(int song_id, int player_position_x)
     if (song_id < 1 || song_id > 4)
     {
         fprintf(stderr, "song_id invaild.\n");
-        return -1;
+        return SONG_ID_INVAILD;
     }
     sprintf(SaveSoulFileName, "save_song%d.txt", song_id);
     FILE *fpWrite = fopen(SaveSoulFileName, "w");
-    CheckPointer(fpWrite);
+    if (!fpWrite)
+    {
+        fprintf(stderr, "write souls to file error.\n");
+        return NULL_POINTER_ERROR;
+    }
     fprintf(fpWrite, "%lf\n", player_position_x);
     fclose(fpWrite);
-    return 0;
+    return SUCCESS;
 }

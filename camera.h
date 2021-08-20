@@ -1,9 +1,14 @@
 // camera.h 定义对相机的操作
 #pragma once
 #include "attr.h"
+#include "game.h"
 #include "raylib/src/raylib.h"
 #include "raylib/src/raymath.h"
 #include "raylib/src/rlgl.h"
+
+Camera2D camera = {0};
+int cameraOption = 0;
+int cameraUpdatersLength = 0;
 
 static char *cameraDescriptions[] = {
     "Follow player center",
@@ -12,9 +17,6 @@ static char *cameraDescriptions[] = {
     "Follow player center horizontally; updateplayer center vertically after landing",
     "Player push camera on getting too close to screen edge"};
 
-Camera2D camera = {0};
-int cameraOption = 0;
-int cameraUpdatersLength = 0;
 
 void UpdateCameraCenter(Camera2D *camera, Player *player, EnvItem *envBlocks, int envItemsLength, float delta, int width, int height);
 
@@ -35,4 +37,4 @@ void (*cameraUpdaters[])(Camera2D *, Player *, EnvItem *, int, float, int, int) 
     UpdateCameraPlayerBoundsPush};
 
 // GameCameraInit 对游戏初始状态的相机设置参数
-int GameCameraInit(Camera *pCamera);
+int GameCameraInit(Camera2D *pCamera);

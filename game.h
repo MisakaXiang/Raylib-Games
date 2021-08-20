@@ -4,6 +4,8 @@
 #include "raylib/src/raymath.h"
 #include "raylib/src/rlgl.h"
 #include "attr.h"
+#include "camera.h"
+#include "interface.h"
 
 // G 游戏中的重力加速度
 const int G = 400;
@@ -63,5 +65,7 @@ Sound soul_collect = {0};
 Music back_sound = {0};
 bool GameOver = false;
 bool song_end = false;
-int interface = 0;
 int song_id = 1;
+INTERFACE = START;
+
+
