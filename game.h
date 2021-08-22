@@ -66,6 +66,8 @@ Music back_sound = {0};
 bool GameOver = false;
 bool song_end = false;
 int song_id = 1;
+
+// INTERFACE 不同界面
 INTERFACE = START;
 
 
