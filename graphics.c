@@ -23,15 +23,20 @@ void DrawSoulsOnCanvas()
         {
             DrawRectangleRec(souls[i].rect, ORANGE);
             DrawTextureEx(soul_miss_tex, (Vector2){souls[i].rect.x - soul_tex.width * 0.02 / 2 + 4, souls[i].rect.y - soul_tex.height * 0.02 / 2 + 4}, 0, 0.02, WHITE);
+            continue;
         }
-        else if (souls[i].collect)
+
+        if (souls[i].collect)
         {
             DrawRectangleRec(souls[i].rect, RED);
             DrawTextureEx(soul_boom_tex, (Vector2){souls[i].rect.x - soul_tex.width * 0.03 / 2 + 4, souls[i].rect.y - soul_tex.height * 0.03 / 2 + 4}, 0, 0.03, WHITE);
+            continue;
         }
-        else 
+
+        if ((!souls[i].miss) && (!souls[i].collect))
         {
             DrawTextureEx(soul_tex, (Vector2){souls[i].rect.x - soul_tex.width * 0.02 / 2 + 4, souls[i].rect.y - soul_tex.height * 0.02 / 2 + 4}, 0, 0.02, WHITE);
+            continue;
         }
     }
 }
