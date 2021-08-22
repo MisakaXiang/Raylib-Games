@@ -8,8 +8,16 @@ int ComputeDistance(Player *pPlayer, Soul *pSouls)
 
 void CheckIfSoulsEnd(Player *pPlayer, Soul **pSouls)
 {
-    CheckPointer(pPlayer);
-    CheckPointer(pSouls);
+    int res = CheckPointer(pPlayer);
+    if (!res) 
+    {
+        PrintBacktrace();
+    }
+    res = CheckPointer(pSouls);
+    if (!res) 
+    {
+        PrintBacktrace();
+    }
     if (pPlayer->position.x > ((*pSouls)[note_num - 1].rect.x + 100))
     {
         song_end = true;
@@ -21,8 +29,16 @@ void CheckIfSoulsEnd(Player *pPlayer, Soul **pSouls)
 
 void CheckIfGameOver(Player *pPlayer, EnvItem **pEnvBlocks)
 {
-    CheckPointer(pPlayer);
-    CheckPointer(pEnvBlocks);
+    int res = CheckPointer(pPlayer);
+    if (!res) 
+    {
+        PrintBacktrace();
+    }
+    res = CheckPointer(pEnvBlocks);
+    if (!res) 
+    {
+        PrintBacktrace();
+    }
     int on_build = 0;
     for (int i = 0; i < note_num; i++)
     {
@@ -43,8 +59,16 @@ void CheckIfGameOver(Player *pPlayer, EnvItem **pEnvBlocks)
 
 void CheckIfSoulsPass(Player *pPlayer, Soul **pSouls)
 {
-    CheckPointer(pPlayer);
-    CheckPointer(pSouls);
+    int res = CheckPointer(pPlayer);
+    if (!res) 
+    {
+        PrintBacktrace();
+    }
+    res = CheckPointer(pSouls);
+    if (!res) 
+    {
+        PrintBacktrace();
+    }
     for (int i = pass_soul_index; i < note_num; i++)
     {
         if ((pPlayer->rect.x - (*pSouls)[i].rect.x) > 10 && ((*pSouls)[i].collect == 0) && (*pSouls)[i].pass == 0)
@@ -57,11 +81,23 @@ void CheckIfSoulsPass(Player *pPlayer, Soul **pSouls)
     }
 }
 
-void CheckIfJumpOnBlocks(Player *pPlayer, EnvItem **pEnvBlocks, int *JumpOnBlocks, float delta)
+void CheckCanJumpOnBlocks(Player *pPlayer, EnvItem **pEnvBlocks, int *JumpOnBlocks, float delta)
 {
-    CheckPointer(pPlayer);
-    CheckPointer(pEnvBlocks);
-    CheckPointer(JumpOnBlocks);
+    int res = CheckPointer(pPlayer);
+    if (!res) 
+    {
+        PrintBacktrace();
+    }
+    res = CheckPointer(pEnvBlocks);
+    if (!res) 
+    {
+        PrintBacktrace();
+    }
+    res = CheckPointer(JumpOnBlocks);
+    if (!res) 
+    {
+        PrintBacktrace();
+    }
     for (int i = 0; i < envItemsLength; i++)
     {
         EnvItem *ei = *pEnvBlocks + i;
@@ -81,8 +117,16 @@ void CheckIfJumpOnBlocks(Player *pPlayer, EnvItem **pEnvBlocks, int *JumpOnBlock
 
 void ComputeScore(Player *pPlayer, Soul **pSouls)
 {
-    CheckPointer(pPlayer);   
-    CheckPointer(pSouls); 
+    int res = CheckPointer(pPlayer);   
+    if (!res) 
+    {
+        PrintBacktrace();
+    }
+    res = CheckPointer(pSouls); 
+    if (!res) 
+    {
+        PrintBacktrace();
+    }
 
     // 通过距离函数判断分数, 并更新total_perfect和total_great
     // pass_soul_index + 1 则为距离 player 最近的 soul 的索引
@@ -110,15 +154,27 @@ void ComputeScore(Player *pPlayer, Soul **pSouls)
 
 void UpdatePlayerRect(Player *pPlayer)
 {
-    CheckPointer(pPlayer);   
+    int res = CheckPointer(pPlayer);   
+    if (!res) 
+    {
+        PrintBacktrace();
+    }
     pPlayer->rect.x = pPlayer->position.x - pPlayer->rect.width / 2;
     pPlayer->rect.y = pPlayer->position.y - pPlayer->rect.height;
 }
 
 void UpdatePlayerPosition(Player *pPlayer, int *JumpOnBlocks, float delta)
 {
-    CheckPointer(pPlayer);   
-    CheckPointer(JumpOnBlocks); 
+    int res = CheckPointer(pPlayer);   
+    if (!res) 
+    {
+        PrintBacktrace();
+    }
+    res = CheckPointer(JumpOnBlocks); 
+    if (!res) 
+    {
+        PrintBacktrace();
+    }
     pPlayer->position.x += pPlayer->speed.x;
     // 还没有跳上envblock, 根据G和speed.y更新player的位置
     if (!JumpOnBlocks)
