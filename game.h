@@ -5,7 +5,7 @@
 #include "raylib/src/rlgl.h"
 #include "attr.h"
 #include "camera.h"
-#include "interface.h"
+#include "statemachine.h"
 
 // G 游戏中的重力加速度
 const int G = 400;
@@ -67,7 +67,16 @@ bool GameOver = false;
 bool song_end = false;
 int song_id = 1;
 
-// INTERFACE 不同界面
-INTERFACE = START;
+// UpdateDrawFrame 每一帧更新和画图
+void UpdateDrawFrame(void); 
+
+// InitGame 初始化游戏
+void InitGame(void);      
+
+// UnloadGame 释放游戏中的资源
+void UnloadGame(void);   
+
+// StartGame 开始游戏
+void StartGame(void);       
 
 

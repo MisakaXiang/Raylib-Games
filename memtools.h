@@ -7,6 +7,7 @@
 
 #include "errcode.h"
 
+// CheckPointer 检查指针，并返回对应的错误码
 int CheckPointer(void *ptr)
 {
     if (ptr == (void *)0)
@@ -17,6 +18,7 @@ int CheckPointer(void *ptr)
     return SUCCESS;
 }
 
+// CheckPointerWithExit 检查指针，指针为空时直接退出程序
 void CheckPointerWithExit(void *ptr)
 {
     if (ptr == (void *)0)
@@ -26,6 +28,7 @@ void CheckPointerWithExit(void *ptr)
     }
 }
 
+// PrintBacktrace 打印当前调用栈
 void PrintBacktrace()
 {
     void *buffer[100];

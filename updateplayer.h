@@ -3,7 +3,7 @@
 
 #include "game.h"
 #include "memtools.h"
-#include "interface.h"
+#include "statemachine.h"
 
 // 用来保存已经播放过的 soul 索引
 int pass_soul_index = 0;
@@ -31,3 +31,6 @@ void UpdatePlayerPosition(Player *pPlayer, int *JumpOnBlocks, float delta);
 
 // ComputeDistance 计算 player 和 soul 的距离函数
 int ComputeDistance(Player *pPlayer, Soul *pSouls);
+
+// UpdatePlayer 更新 player 的各种操作
+void UpdatePlayer(Player *player, EnvItem *envBlocks, int envItemsLength, float delta);

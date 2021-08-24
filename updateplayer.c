@@ -23,7 +23,7 @@ void CheckIfSoulsEnd(Player *pPlayer, Soul **pSouls)
         song_end = true;
         total_score = (total_perfect * 1.2 + total_great * 0.8) / note_num;
         StopMusicStream(back_sound);
-        INTERFACE =SCORE;
+        event = event_game_over;
     }
 }
 
@@ -52,7 +52,7 @@ void CheckIfGameOver(Player *pPlayer, EnvItem **pEnvBlocks)
         if (CheckCollisionRecs(pPlayer->rect, (*pEnvBlocks)[i].rect) && (pPlayer->position.y > (*pEnvBlocks)[i].rect.y) && (on_build != i))
         {
             GameOver = true;
-            INTERFACE = GAME_OVER;
+            event = event_game_over;
         }
     }
 }
@@ -108,7 +108,7 @@ void CheckCanJumpOnBlocks(Player *pPlayer, EnvItem **pEnvBlocks, int *JumpOnBloc
             ei->rect.y >= p->y &&
             ei->rect.y < p->y + pPlayer->speed.y * delta)
         {
-            JumpOnBlocks = 1;
+            *JumpOnBlocks = 1;
             pPlayer->speed.y = 0.0f;
             p->y = ei->rect.y;
         }
@@ -197,7 +197,7 @@ void UpdatePlayer(Player *player, EnvItem *envBlocks, int envItemsLength, float 
         
         int JumpOnBlocks = 0;
         // 判断 player 是否跳上了envblock, 若能跳上，则更新player的y轴速度以及y轴位置
-        CheckIfJumpOnBlocks(player, envBlocks, &JumpOnBlocks, delta);
+        CheckCanJumpOnBlocks(player, &envBlocks, &JumpOnBlocks, delta);
         
         // 更新 player 的位置
         UpdatePlayerPosition(player, &JumpOnBlocks, delta);
@@ -206,12 +206,12 @@ void UpdatePlayer(Player *player, EnvItem *envBlocks, int envItemsLength, float 
         // 按下A键, 判定分数
         if (IsKeyDown(KEY_A))
         {
-            ComputeScore(player, souls);
+            ComputeScore(player, &souls);
         }
 
-        CheckIfSoulsPass(player, souls);
-        CheckIfGameOver(player, envBlocks);
-        CheckIfSoulsEnd(player, souls);
+        CheckIfSoulsPass(player, &souls);
+        CheckIfGameOver(player, &envBlocks);
+        CheckIfSoulsEnd(player, &souls);
 
     }
 }

@@ -13,13 +13,7 @@
 #include "game.h"
 #include "graphics.h"
 #include "updateplayer.h"
-
-
-
-void UpdateDrawFrame(void); // Update and Draw (one frame)
-void InitGame(void);        // Initialize game
-void UnloadGame(void);      // Unload game
-
+#include "statemachine.h"
 
 int main(void)
 {
@@ -76,8 +70,8 @@ void StartGame(void)
     total_perfect = 0;
     total_miss = 0;
     total_great = 0;
-    INTERFACE = START;
     total_score = 0;
+
     GameOver = false;
     song_end = false;
 
@@ -115,167 +109,7 @@ void StartGame(void)
     {
         exit(1);
     }
-}
-
-// Update game (one frame)
-void UpdateGame(void)
-{
-    if (INTERFACE == START)
-    {
-        if (IsKeyPressed(KEY_SPACE))
-        {
-            INTERFACE = THEME;
-        }
-    }
-
-    if (INTERFACE == THEME)
-    {
-        if (IsKeyPressed(KEY_ENTER))
-        {
-            INTERFACE = RULE;
-        }
-    }
-
-    if (INTERFACE == RULE)
-    {
-        if (IsKeyPressed(KEY_SPACE))
-        {
-            INTERFACE == SELECT_MUSIC;
-        }
-    }
-
-    if (INTERFACE == SELECT_MUSIC)
-    {
-        // choose different song
-        if (IsKeyPressed(KEY_Z))
-        {
-            song_id = 1;
-            InitGame();
-            INTERFACE == PLAY;
-        }
-        if (IsKeyPressed(KEY_X))
-        {
-            song_id = 2;
-            InitGame();
-            INTERFACE == PLAY;
-        }
-        if (IsKeyPressed(KEY_C))
-        {
-            song_id = 3;
-            InitGame();
-            INTERFACE == PLAY;
-        }
-        if (IsKeyPressed(KEY_V))
-        {
-            song_id = 4;
-            InitGame();
-            INTERFACE == PLAY;
-        }
-    }
-
-    if (INTERFACE == GAME_OVER)
-    {
-        if (IsKeyPressed(KEY_ENTER))
-        {
-            INTERFACE = SELECT_MUSIC;
-        }
-    }
-
-    if (INTERFACE == PLAY)
-    {
-        PlayMusicStream(back_sound);
-        UpdateMusicStream(back_sound);
-
-        float deltaTime = GetFrameTime();
-        UpdatePlayer(&player, envBlocks, envItemsLength, deltaTime);
-
-        if (IsKeyPressed(KEY_Q))
-        {
-            WriteSoulsToFile(song_id, player.position.x);
-        }
-
-        // Call update camera function by its pointer
-        cameraUpdaters[cameraOption](&camera, &player, envBlocks, envItemsLength, deltaTime, screenWidth, screenHeight);
-        //----------------------------------------------------------------------------------
-    }
-
-    if (INTERFACE == SCORE)
-    {
-        if (IsKeyPressed(KEY_ENTER))
-        {
-            INTERFACE = SELECT_MUSIC;
-        }
-    }
-}
-
-// Draw game (one frame)
-void DrawGame(void)
-{
-    // Draw
-    //----------------------------------------------------------------------------------
-    if (INTERFACE == GAME_OVER)
-    {
-        BeginDrawing();
-        DrawTexOnBackground(LIGHTGRAY, GameOver_tex);
-        EndDrawing();
-    }
-    
-    if (INTERFACE == PLAY)
-    {
-        BeginDrawing();
-        DrawTexOnBackground(LIGHTGRAY, play_tex);
-
-        BeginMode2D(camera);
-                
-            DrawSoulsOnCanvas();
-            DrawEnvBlocksOnCanvas();
-            DrawPlayerOnCanvas();
-            DrawFloorOnCanvas();
-
-        EndMode2D();
-
-        DrawScoreOnCanvas();
-        DrawControlsOnCanvas();
-
-        EndDrawing();
-    }
-
-    if (INTERFACE == START)
-    {
-        BeginDrawing();
-        DrawTexOnBackground(RAYWHITE, start_tex);
-        EndDrawing();
-    }
-
-    if (INTERFACE == THEME)
-    {
-        BeginDrawing();
-        DrawTexOnBackground(RAYWHITE, theme_tex);
-        EndDrawing();
-    }
-
-    if (INTERFACE == RULE)
-    {
-        BeginDrawing();
-        DrawTexOnBackground(RAYWHITE, rule_tex);
-        EndDrawing();
-    }
-
-    if (INTERFACE == SELECT_MUSIC)
-    {
-        BeginDrawing();
-        DrawTexOnBackground(RAYWHITE, journey_tex);
-        EndDrawing();
-    }
-
-    if (INTERFACE == SCORE)
-    {
-        BeginDrawing();
-        DrawTexOnBackground(LIGHTGRAY, score_tex);
-        DrawScoreOnCanvas();
-        EndDrawing();
-    }
-    //----------------------------------------------------------------------------------
+    InitStateMachine();
 }
 
 // Unload game variables
@@ -287,6 +121,5 @@ void UnloadGame(void)
 // Update and Draw (one frame)
 void UpdateDrawFrame(void)
 {
-    UpdateGame();
-    DrawGame();
+    UpdateStateMachine();
 }
