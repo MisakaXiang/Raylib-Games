@@ -1,22 +1,21 @@
 #include "updateplayer.h"
 
-int ComputeDistance(Player *pPlayer, Soul *pSouls) 
+int ComputeDistance(Player *pPlayer, Soul *pSouls)
 {
-    return  (pPlayer->rect.x - pSouls->rect.x) * (pPlayer->rect.x - pSouls->rect.x) 
-    + (pPlayer->rect.y - pSouls->rect.y) * (pPlayer->rect.y - pSouls->rect.y);
+    return (pPlayer->rect.x - pSouls->rect.x) * (pPlayer->rect.x - pSouls->rect.x) + (pPlayer->rect.y - pSouls->rect.y) * (pPlayer->rect.y - pSouls->rect.y);
 }
 
 void CheckIfSoulsEnd(Player *pPlayer, Soul **pSouls)
 {
-    int res = CheckPointer(pPlayer);
-    if (!res) 
+    if (CheckPointer(pPlayer) == NULL_POINTER_ERROR)
     {
         PrintBacktrace();
+        exit(NULL_POINTER_ERROR);
     }
-    res = CheckPointer(pSouls);
-    if (!res) 
+    if (CheckPointer(pSouls) == NULL_POINTER_ERROR)
     {
         PrintBacktrace();
+        exit(NULL_POINTER_ERROR);
     }
     if (pPlayer->position.x > ((*pSouls)[note_num - 1].rect.x + 100))
     {
@@ -29,45 +28,52 @@ void CheckIfSoulsEnd(Player *pPlayer, Soul **pSouls)
 
 void CheckIfGameOver(Player *pPlayer, EnvItem **pEnvBlocks)
 {
-    int res = CheckPointer(pPlayer);
-    if (!res) 
+    if (CheckPointer(pPlayer) == NULL_POINTER_ERROR)
     {
         PrintBacktrace();
+        exit(NULL_POINTER_ERROR);
     }
-    res = CheckPointer(pEnvBlocks);
-    if (!res) 
+    if (CheckPointer(pEnvBlocks) == NULL_POINTER_ERROR)
     {
         PrintBacktrace();
+        exit(NULL_POINTER_ERROR);
     }
     int on_build = 0;
     for (int i = 0; i < note_num; i++)
     {
         // 找到player所处的envblock的索引
-        if ((pPlayer->position.x >= (*pEnvBlocks)[i].rect.x) && 
+        if ((pPlayer->position.x >= (*pEnvBlocks)[i].rect.x) &&
             (pPlayer->position.x <= (*pEnvBlocks)[i].rect.x + (*pEnvBlocks)[i].rect.width))
         {
             on_build = i;
+            return;
         }
         // player跳到了envblock的下面则gameover
         if (CheckCollisionRecs(pPlayer->rect, (*pEnvBlocks)[i].rect) && (pPlayer->position.y > (*pEnvBlocks)[i].rect.y) && (on_build != i))
         {
             GameOver = true;
             event = event_game_over;
+            return;
         }
     }
 }
 
 void CheckIfSoulsPass(Player *pPlayer, Soul **pSouls)
 {
-    int res = CheckPointer(pPlayer);
-    if (!res) 
+    if (CheckPointer(pPlayer) == NULL_POINTER_ERROR)
     {
         PrintBacktrace();
+        exit(NULL_POINTER_ERROR);
     }
-    res = CheckPointer(pSouls);
-    if (!res) 
+    if (CheckPointer(pSouls) == NULL_POINTER_ERROR)
     {
         PrintBacktrace();
+        exit(NULL_POINTER_ERROR);
+    }
+    if (CheckPointer(pSouls[0]) == NULL_POINTER_ERROR)
+    {
+        PrintBacktrace();
+        exit(NULL_POINTER_ERROR);
     }
     for (int i = pass_soul_index; i < note_num; i++)
     {
@@ -77,26 +83,32 @@ void CheckIfSoulsPass(Player *pPlayer, Soul **pSouls)
             (*pSouls)[i].pass = 1;
             (*pSouls)[i].miss = 1;
             pass_soul_index = i;
+            return;
         }
     }
 }
 
 void CheckCanJumpOnBlocks(Player *pPlayer, EnvItem **pEnvBlocks, int *JumpOnBlocks, float delta)
 {
-    int res = CheckPointer(pPlayer);
-    if (!res) 
+    if (CheckPointer(pPlayer) == NULL_POINTER_ERROR)
     {
         PrintBacktrace();
+        exit(NULL_POINTER_ERROR);
     }
-    res = CheckPointer(pEnvBlocks);
-    if (!res) 
+    if (CheckPointer(pEnvBlocks) == NULL_POINTER_ERROR)
     {
         PrintBacktrace();
+        exit(NULL_POINTER_ERROR);
     }
-    res = CheckPointer(JumpOnBlocks);
-    if (!res) 
+    if (CheckPointer(pEnvBlocks[0]) == NULL_POINTER_ERROR)
     {
         PrintBacktrace();
+        exit(NULL_POINTER_ERROR);
+    }
+    if (CheckPointer(JumpOnBlocks) == NULL_POINTER_ERROR)
+    {
+        PrintBacktrace();
+        exit(NULL_POINTER_ERROR);
     }
     for (int i = 0; i < envItemsLength; i++)
     {
@@ -111,21 +123,27 @@ void CheckCanJumpOnBlocks(Player *pPlayer, EnvItem **pEnvBlocks, int *JumpOnBloc
             *JumpOnBlocks = 1;
             pPlayer->speed.y = 0.0f;
             p->y = ei->rect.y;
+            return;
         }
     }
 }
 
 void ComputeScore(Player *pPlayer, Soul **pSouls)
 {
-    int res = CheckPointer(pPlayer);   
-    if (!res) 
+    if (CheckPointer(pPlayer) == NULL_POINTER_ERROR)
     {
         PrintBacktrace();
+        exit(NULL_POINTER_ERROR);
     }
-    res = CheckPointer(pSouls); 
-    if (!res) 
+    if (CheckPointer(pSouls) == NULL_POINTER_ERROR)
     {
         PrintBacktrace();
+        exit(NULL_POINTER_ERROR);
+    }
+    if (CheckPointer(pSouls[0]) == NULL_POINTER_ERROR)
+    {
+        PrintBacktrace();
+        exit(NULL_POINTER_ERROR);
     }
 
     // 通过距离函数判断分数, 并更新total_perfect和total_great
@@ -141,6 +159,7 @@ void ComputeScore(Player *pPlayer, Soul **pSouls)
             (*pSouls)[pass_soul_index + 1].collect = 1;
             (*pSouls)[pass_soul_index + 1].miss = 0;
             (*pSouls)[pass_soul_index + 1].pass = 1;
+            return;
         }
         if (score > 0 && score < 200)
         {
@@ -148,16 +167,22 @@ void ComputeScore(Player *pPlayer, Soul **pSouls)
             (*pSouls)[pass_soul_index + 1].collect = 1;
             (*pSouls)[pass_soul_index + 1].miss = 0;
             (*pSouls)[pass_soul_index + 1].pass = 1;
+            return;
         }
     }
+    fprintf(stderr,
+            "Unknown error, current dis = %d, (*pSouls)[pass_soul_index + 1].pass = %d",
+            dis,
+            (*pSouls)[pass_soul_index + 1].pass);
+    return;
 }
 
 void UpdatePlayerRect(Player *pPlayer)
 {
-    int res = CheckPointer(pPlayer);   
-    if (!res) 
+    if (CheckPointer(pPlayer) == NULL_POINTER_ERROR)
     {
         PrintBacktrace();
+        exit(NULL_POINTER_ERROR);
     }
     pPlayer->rect.x = pPlayer->position.x - pPlayer->rect.width / 2;
     pPlayer->rect.y = pPlayer->position.y - pPlayer->rect.height;
@@ -165,15 +190,15 @@ void UpdatePlayerRect(Player *pPlayer)
 
 void UpdatePlayerPosition(Player *pPlayer, int *JumpOnBlocks, float delta)
 {
-    int res = CheckPointer(pPlayer);   
-    if (!res) 
+    if (CheckPointer(pPlayer) == NULL_POINTER_ERROR)
     {
         PrintBacktrace();
+        exit(NULL_POINTER_ERROR);
     }
-    res = CheckPointer(JumpOnBlocks); 
-    if (!res) 
+    if (CheckPointer(JumpOnBlocks) == NULL_POINTER_ERROR)
     {
         PrintBacktrace();
+        exit(NULL_POINTER_ERROR);
     }
     pPlayer->position.x += pPlayer->speed.x;
     // 还没有跳上envblock, 根据G和speed.y更新player的位置
@@ -186,32 +211,30 @@ void UpdatePlayerPosition(Player *pPlayer, int *JumpOnBlocks, float delta)
 
 void UpdatePlayer(Player *player, EnvItem *envBlocks, int envItemsLength, float delta)
 {
-    if (GameOver) return;
-    if (!GameOver)
+    if (GameOver)
+        return;
+    // 按下空格键, 改变 player 的y轴速度
+    if (IsKeyDown(KEY_SPACE))
     {
-        // 按下空格键, 改变 player 的y轴速度
-        if (IsKeyDown(KEY_SPACE))
-        {
-            player->speed.y = -PLAYER_JUMP_SPD;
-        }
-        
-        int JumpOnBlocks = 0;
-        // 判断 player 是否跳上了envblock, 若能跳上，则更新player的y轴速度以及y轴位置
-        CheckCanJumpOnBlocks(player, &envBlocks, &JumpOnBlocks, delta);
-        
-        // 更新 player 的位置
-        UpdatePlayerPosition(player, &JumpOnBlocks, delta);
-        UpdatePlayerRect(player);
-
-        // 按下A键, 判定分数
-        if (IsKeyDown(KEY_A))
-        {
-            ComputeScore(player, &souls);
-        }
-
-        CheckIfSoulsPass(player, &souls);
-        CheckIfGameOver(player, &envBlocks);
-        CheckIfSoulsEnd(player, &souls);
-
+        player->speed.y = -PLAYER_JUMP_SPD;
     }
+
+    int JumpOnBlocks = 0;
+    // 判断 player 是否跳上了envblock, 若能跳上，则更新player的y轴速度以及y轴位置
+    CheckCanJumpOnBlocks(player, &envBlocks, &JumpOnBlocks, delta);
+
+    // 更新 player 的位置
+    UpdatePlayerPosition(player, &JumpOnBlocks, delta);
+    UpdatePlayerRect(player);
+
+    // 按下A键, 判定分数
+    if (IsKeyDown(KEY_A))
+    {
+        ComputeScore(player, &souls);
+    }
+
+    CheckIfSoulsPass(player, &souls);
+    CheckIfGameOver(player, &envBlocks);
+    CheckIfSoulsEnd(player, &souls);
+    return;
 }
