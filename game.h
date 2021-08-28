@@ -4,6 +4,8 @@
 #include "raylib/src/raymath.h"
 #include "raylib/src/rlgl.h"
 #include "attr.h"
+#include "camera.h"
+#include "statemachine.h"
 
 // G 游戏中的重力加速度
 const int G = 400;
@@ -17,14 +19,14 @@ const float PLAYER_HOR_SPD = 200.0f;
 // MAX_NOTE_NUM 一场游戏中最多的音符数
 const int MAX_NOTE_NUM = 999;
 
-// build_size ???
+// build_size EnvBlocks的大小
 Vector2 build_size[5];
+// EnvBlock的数量
+const int envItemsLength = 1000;
 // screenWidth 游戏的显示宽度
 const int screenWidth = 1000;
 // screenHeight 游戏的显示高度
 const int screenHeight = 600;
-// on_build ???
-int on_build = 0;
 // total_score 玩家的总分数
 float total_score = 0.0f;
 // total_perfect 玩家总perfect数
@@ -63,5 +65,18 @@ Sound soul_collect = {0};
 Music back_sound = {0};
 bool GameOver = false;
 bool song_end = false;
-int interface = 0;
 int song_id = 1;
+
+// UpdateDrawFrame 每一帧更新和画图
+void UpdateDrawFrame(void); 
+
+// InitGame 初始化游戏
+void InitGame(void);      
+
+// ReleaseResource 释放游戏中的资源
+void ReleaseResource(void);   
+
+// StartGame 开始游戏
+void StartGame(void);       
+
+

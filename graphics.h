@@ -10,3 +10,18 @@ void DrawTexOnBackground(Color BackgroundColor, Texture2D tex);
 
 // DrawScoreOnCanvas 在画布上绘制分数文本
 void DrawScoreOnCanvas();
+
+// DrawSoulsOnCanvas 在画布上绘制音符
+void DrawSoulsOnCanvas();
+
+// DrawControlsOnCanvas 在画布上绘制控制说明
+void DrawControlsOnCanvas();
+
+// DrawEnvBlocksOnCanvas 在画布上绘制EnvBlocks
+void DrawEnvBlocksOnCanvas();
+
+// DrawPlayerOnCanvas 在画布上绘制Player
+void DrawPlayerOnCanvas();
+
+// DrawFloorOnCanvas 在画布上绘制Floor
+void DrawFloorOnCanvas();

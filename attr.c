@@ -11,7 +11,6 @@ int GameAttrInit(EnvItem *pDFloor, Vector2 *pVector2[5], EnvItem **pEnvBlocks)
         return NULL_POINTER_ERROR;
     }
     (*pDFloor).rect = (Rectangle){0, screenHeight + 200, 20000, 400};
-    (*pDFloor).blocking = 0;
     (*pDFloor).color = BROWN;
 
     (*pVector2)[0] = (Vector2){200, 400};
@@ -24,7 +23,6 @@ int GameAttrInit(EnvItem *pDFloor, Vector2 *pVector2[5], EnvItem **pEnvBlocks)
     (*pEnvBlocks)[0].rect.width = 400;
     (*pEnvBlocks)[0].rect.x = 0;
     (*pEnvBlocks)[0].rect.y = (*pDFloor).rect.y - (*pEnvBlocks)[0].rect.height;
-    (*pEnvBlocks)[0].blocking = 1;
     (*pEnvBlocks)[0].color = GRAY;
 
     for (int i = 1; i < note_num; i++)
@@ -36,7 +34,6 @@ int GameAttrInit(EnvItem *pDFloor, Vector2 *pVector2[5], EnvItem **pEnvBlocks)
         (*pEnvBlocks)[i].rect.width = (*pVector2)[num].y;
         (*pEnvBlocks)[i].rect.x = rand() % 100 + 100 + (*pEnvBlocks)[i - 1].rect.x + (*pEnvBlocks)[i - 1].rect.width;
         (*pEnvBlocks)[i].rect.y = d_floor.rect.y - (*pEnvBlocks)[i].rect.height;
-        (*pEnvBlocks)[i].blocking = 1;
         (*pEnvBlocks)[i].color = GRAY;
     }
     return SUCCESS;
@@ -93,7 +90,6 @@ int GamePlayerInit(Player *pPlayer)
         (*pPlayer).rect.y + (*pPlayer).rect.height};
     (*pPlayer).speed.y = 0;
     (*pPlayer).speed.x = 3;
-    (*pPlayer).canJump = true;
     return SUCCESS;
 }
 

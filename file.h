@@ -5,31 +5,11 @@
 #include <stdlib.h>
 
 #include "attr.h"
+#include "errcode.h"
 
-int ReadSoulsFromFile(int song_id, Soul *souls,int *p_note_num)
-{
-    // read from note file and create notes
-    char soulFileName[10];
-    if (song_id < 1 || song_id > 4)
-    {
-        fprintf(stderr, "song_id invaild.\n");
-        return -1;
-    }
-    sprintf(soulFileName, "song%d.txt", song_id);
-    FILE *fpRead = fopen(soulFileName, "rb");
-    if (!fpRead)
-    {
-        fprintf(stderr, "Song souls file read error.\n");
-        return -1;
-    }
-    double soul_temp;
-    *p_note_num = 0; // 这首歌曲的音符数
-    // 将文件中的音符全部读入到souls数组中
-    while (fscanf(fpRead, "%lf", &soul_temp) == 1)
-    {
-        souls[*p_note_num].rect.x = (int)soul_temp;
-        *p_note_num += 1;
-    }
-    fclose(fpRead);
-    return 0;
-}
+
+// ReadSoulsFromFile 从文件中读入音符数据并且创建音符
+int ReadSoulsFromFile(int song_id, Soul *souls,int *p_note_num);
+
+// WriteSoulsToFile 把 player 的位置数据写入文件
+int WriteSoulsToFile(int song_id, int player_position_x);

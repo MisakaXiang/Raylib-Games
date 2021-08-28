@@ -1,6 +1,7 @@
 #include "camera.h"
 #include "errcode.h"
-#include "game.h"
+
+
 
 void UpdateCameraCenter(Camera2D *camera, Player *player, EnvItem *envBlocks, int envItemsLength, float delta, int width, int height)
 {
@@ -87,7 +88,7 @@ void UpdateCameraEvenOutOnLanding(Camera2D *camera, Player *player, EnvItem *env
     }
     else
     {
-        if (player->canJump && (player->speed.y == 0) && (player->position.y != camera->target.y))
+        if ((player->speed.y == 0) && (player->position.y != camera->target.y))
         {
             eveningOut = 1;
             evenOutTarget = player->position.y;
