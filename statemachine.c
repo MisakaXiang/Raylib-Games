@@ -6,10 +6,10 @@
 #include "graphics.h"
 #include "file.h"
 
-void action_draw_game_over(void) 
+void action_draw_game_over(void)
 {
     BeginDrawing();
-        DrawTexOnBackground(LIGHTGRAY, GameOver_tex);
+    DrawTexOnBackground(LIGHTGRAY, GameOver_tex);
     EndDrawing();
 }
 
@@ -21,19 +21,19 @@ void action_update_game_over(void)
 void action_draw_play(void)
 {
     BeginDrawing();
-        DrawTexOnBackground(LIGHTGRAY, play_tex);
+    DrawTexOnBackground(LIGHTGRAY, play_tex);
 
-        BeginMode2D(camera);
-                
-            DrawSoulsOnCanvas();
-            DrawEnvBlocksOnCanvas();
-            DrawPlayerOnCanvas();
-            DrawFloorOnCanvas();
+    BeginMode2D(camera);
 
-        EndMode2D();
+    DrawSoulsOnCanvas();
+    DrawEnvBlocksOnCanvas();
+    DrawPlayerOnCanvas();
+    DrawFloorOnCanvas();
 
-        DrawScoreOnCanvas();
-        DrawControlsOnCanvas();
+    EndMode2D();
+
+    DrawScoreOnCanvas();
+    DrawControlsOnCanvas();
 
     EndDrawing();
 }
@@ -60,7 +60,7 @@ void action_update_play(void)
 void action_draw_start(void)
 {
     BeginDrawing();
-        DrawTexOnBackground(RAYWHITE, start_tex);
+    DrawTexOnBackground(RAYWHITE, start_tex);
     EndDrawing();
 }
 
@@ -72,7 +72,7 @@ void action_update_start(void)
 void action_draw_theme(void)
 {
     BeginDrawing();
-        DrawTexOnBackground(RAYWHITE, theme_tex);
+    DrawTexOnBackground(RAYWHITE, theme_tex);
     EndDrawing();
 }
 
@@ -84,9 +84,9 @@ void action_update_theme(void)
 void action_draw_rule(void)
 {
     BeginDrawing();
-        DrawTexOnBackground(RAYWHITE, rule_tex);
+    DrawTexOnBackground(RAYWHITE, rule_tex);
     EndDrawing();
-} 
+}
 
 void action_update_rule(void)
 {
@@ -96,9 +96,9 @@ void action_update_rule(void)
 void action_draw_select_music(void)
 {
     BeginDrawing();
-        DrawTexOnBackground(RAYWHITE, journey_tex);
+    DrawTexOnBackground(RAYWHITE, journey_tex);
     EndDrawing();
-} 
+}
 
 void action_update_select_music(void)
 {
@@ -108,8 +108,8 @@ void action_update_select_music(void)
 void action_draw_score(void)
 {
     BeginDrawing();
-        DrawTexOnBackground(LIGHTGRAY, score_tex);
-        DrawScoreOnCanvas();
+    DrawTexOnBackground(LIGHTGRAY, score_tex);
+    DrawScoreOnCanvas();
     EndDrawing();
 }
 
@@ -120,17 +120,14 @@ void action_update_score(void)
 
 void state_machine_regist(StateMachine *pSM, StateInfo *pStateTable)
 {
-    if((pSM == NULL) || (pStateTable == NULL))
-    {
-        return;
-    }
-
+    CheckPtrWithMsgExit(pSM, __FILE__, __LINE__, "pSM null pointer.");
+    CheckPtrWithMsgExit(pStateTable, __FILE__, __LINE__, "pStateTable null pointer.");
     pSM->stateTable = pStateTable;
 }
 
 StateInfo *find_state_table(StateMachine *pSM, Event evt)
 {
-    if(pSM == NULL)
+    if (CheckPtrWithMsg(pSM, __FILE__, __LINE__, "pSM null pointer.") == NULL_POINTER_ERROR)
     {
         return NULL;
     }
@@ -147,28 +144,16 @@ void runStateMachine(StateMachine *pSM, Event evt)
 {
     StateInfo *pStateInfo;
 
-    if(pSM == NULL)
-    {
-        return;
-    }
-
-    pStateInfo = find_state_table(pSM, evt);
-    if (pStateInfo == NULL)
-    {
-        return;
-    }
+    CheckPtrWithMsgExit(pSM, __FILE__, __LINE__, "pSM null pointer.");
+    CheckPtrWithMsgExit(pStateInfo = find_state_table(pSM, evt),
+                        __FILE__, __LINE__, "pStateInfo null pointer.");
 
     Action_Func act = pStateInfo->action;
-    if (act == NULL)
-    {
-        return;
-    }
+    CheckPtrWithMsgExit(act, __FILE__, __LINE__, "act null pointer.");
     act();
 
     pSM->currentState = pStateInfo->nextState;
-
 }
-
 
 void InitStateMachine(void)
 {
@@ -178,13 +163,32 @@ void InitStateMachine(void)
     SM_Type.stateTableSize = sizeof(state_table) / sizeof(state_table[0]);
 }
 
+typedef struct updateTbl
+{
+    int key;
+    Event event;
+} updateTbl;
+
+// utable FSM中按下的键与发生的事件之间的映射表
+const updateTbl utable[] =
+    {{KEY_ENTER, event_press_key_enter},
+     {KEY_SPACE, event_press_key_space},
+     {KEY_Z, event_press_key_z},
+     {KEY_X, event_press_key_x},
+     {KEY_C, event_press_key_c},
+     {KEY_V, event_press_key_v}};
+
 void UpdateStateMachine(void)
 {
-    if (IsKeyPressed(KEY_ENTER)) {event = event_press_key_enter;} 
-    if (IsKeyPressed(KEY_SPACE)) {event = event_press_key_space;} 
-    if (IsKeyPressed(KEY_Z)) {event = event_press_key_z;} 
-    if (IsKeyPressed(KEY_X)) {event = event_press_key_x;} 
-    if (IsKeyPressed(KEY_C)) {event = event_press_key_c;} 
-    if (IsKeyPressed(KEY_V)) {event = event_press_key_v;} 
+    int key_pressed = GetKeyPressed();
+    int i = 0;
+    for (; i < sizeof(utable) / sizeof(utable[0]); i++)
+    {
+        if (utable[i].key == key_pressed)
+        {
+            event = utable[i].event;
+            break;
+        }
+    }
     runStateMachine(&SM_Type, event);
 }
