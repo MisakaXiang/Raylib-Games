@@ -3,7 +3,9 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <execinfo.h>
+#ifdef __linux__
+    #include <execinfo.h>
+#endif
 
 #include "errcode.h"
 
@@ -29,6 +31,7 @@ void CheckPointerWithExit(void *ptr)
 }
 
 // PrintBacktrace 打印当前调用栈
+#ifdef __linux__
 void PrintBacktrace()
 {
     void *buffer[100];
@@ -49,3 +52,9 @@ void PrintBacktrace()
     }
     free(strings);
 }
+#else
+void PrintBacktrace()
+{
+    // do nothing
+}
+#endif // __linux__
