@@ -42,7 +42,7 @@ int main(void)
 
     // De-Initialization
     //--------------------------------------------------------------------------------------
-    UnloadGame();  // Unload loaded data (textures, sounds, models...)
+    ReleaseResource();  // Unload loaded data (textures, sounds, models...)
     CloseWindow(); // Close window and OpenGL context
     //--------------------------------------------------------------------------------------
 
@@ -113,7 +113,7 @@ void StartGame(void)
 }
 
 // Unload game variables
-void UnloadGame(void)
+void ReleaseResource(void)
 {
     // TODO: Unload all dynamic loaded data (textures, sounds, models...)
 }

@@ -73,8 +73,8 @@ void UpdateDrawFrame(void);
 // InitGame 初始化游戏
 void InitGame(void);      
 
-// UnloadGame 释放游戏中的资源
-void UnloadGame(void);   
+// ReleaseResource 释放游戏中的资源
+void ReleaseResource(void);   
 
 // StartGame 开始游戏
 void StartGame(void);       
