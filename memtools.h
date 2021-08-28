@@ -86,5 +86,6 @@ void PrintBacktrace()
 void PrintBacktrace()
 {
     // do nothing
+    fprintf(stderr,"Your system doesn't implemented backtrace() or we don't implement it.\n")
 }
 #endif // __linux__
